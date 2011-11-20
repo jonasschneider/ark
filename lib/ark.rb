@@ -1,5 +1,5 @@
 require "ark/version"
 
 module Ark
-  # Your code goes here...
+  autoload :Backup, "ark/backup"
 end
