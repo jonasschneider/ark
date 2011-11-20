@@ -4,7 +4,11 @@ module Ark
     
     def initialize options
       @backup_dir = options[:backup_dir]
-      @data_dir = options[:backup_dir]
+      @data_dir = options[:data_dir]
+    end
+    
+    def run!
+      puts `rsync -r #{data_dir}/ #{backup_dir}`
     end
   end
 end
