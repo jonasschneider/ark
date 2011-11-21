@@ -1,6 +1,6 @@
 module Ark
   class Noah
-    attr_reader :backup_dir, :data_dir, :cache_dir, :shift
+    attr_accessor :backup_dir, :data_dir, :cache_dir, :shift
     
     def initialize options
       @backup_dir = options[:backup_dir]
@@ -10,8 +10,7 @@ module Ark
     end
     
     def run!
-      joined = commands.join(" && ")
-      `#{joined}`
+      `#{command}`
     end
     
     def shift_commands
@@ -39,6 +38,10 @@ module Ark
     
     def commands
       shift_commands + [rsync_command]
+    end
+    
+    def command
+      commands.join(" && ")
     end
   end
 end

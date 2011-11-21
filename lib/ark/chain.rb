@@ -32,8 +32,12 @@ module Ark
       @backups.each &block
     end
     
-    def shifting_noah
-      Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})
+    def noah
+      if @backups.length == 1
+        Ark::Noah.new(backup_dir: "#{path}.0")
+      else
+        Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})
+      end
     end
     
     def repo_path

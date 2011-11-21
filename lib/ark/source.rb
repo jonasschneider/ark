@@ -4,6 +4,8 @@ module Ark
       new(:fs, path)
     end
     
+    attr_reader :path
+    
     def initialize(type, path)
       @path = path
     end

@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webrat"
   s.add_development_dependency "rack-test"
   
+  s.add_runtime_dependency "awesome_print"
   s.add_runtime_dependency "sinatra"
   s.add_runtime_dependency "haml"
 end
