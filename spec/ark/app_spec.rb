@@ -35,10 +35,10 @@ describe "Ark::App" do
       last_response.body.should have_selector("a[href='/chains/bup']")
     end
     
-    it "displays a list of backups for a chain" do
-      get '/chains/bup'
+    it "displays a list of backups for a task" do
+      get '/tasks/bup'
       
-      last_response.body.should have_selector("a[href='/chains/bup/backups/#{repo.chains.first.backups.first.id}']")
+      last_response.body.should have_selector("a[href='/tasks/bup/backups/#{repo.chains.first.backups.first.id}']")
     end
     
     it "errors for a nonexistent chain" do

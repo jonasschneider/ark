@@ -1,0 +1,8 @@
+%h2= @task.name
+- if @task.chain.backups.empty?
+  (Noch keine Backups)
+- else
+  %ul
+    - @task.chain.backups.each do |backup|
+      %li
+        %a{ href: "/#{@task.name}/backups/#{backup.id}" }== Backup #{backup.id}

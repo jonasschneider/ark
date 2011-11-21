@@ -8,6 +8,14 @@ module Ark
       @source = Ark::Source.load(source)
     end
     
+    def chain(name)
+      chains.detect{|c| c.name == name } or new_chain(name)
+    end
+    
+    def new_chain(name)
+      Ark::Chain.new File.join(source.path, name)
+    end
+    
     def chains
       # FIXME: File.directory?(path) will not work after disconnecting remote sources
       @source.glob('*')

@@ -1,5 +1,7 @@
 require "ark"
 
-Ark::App.set :repo, Ark::Repo.new('/tmp/arkrepo')
+data = YAML.load(File.expand_path('~/ark_config.yml'))
+
+Ark::App.set :manager, Ark::Manager.new(data)
 
 run Ark::App

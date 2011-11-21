@@ -11,7 +11,7 @@ module Ark
       while File.exists?(dir = "#{path}.#{@backups.length}")
         @backups << Ark::Backup.new(dir)
       end
-      raise "Bogus directory structure - Backup 0 missing" if @backups.length == 0
+      raise "Bogus directory structure - Backup 0 missing" if @backups.length == 0 && Dir["#{path}.*"].length > 0
       raise "Bogus directory structure - Hole found after #{@backups.last.name}" unless @backups.length == Dir["#{path}.*"].length
       
       @backups.each_with_index do |backup, i|
@@ -33,7 +33,7 @@ module Ark
     end
     
     def noah
-      if @backups.length == 1
+      if @backups.length < 2
         Ark::Noah.new(backup_dir: "#{path}.0")
       else
         Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})

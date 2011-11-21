@@ -28,6 +28,12 @@ describe "Ark::Chain" do
         Ark::Chain.new backup_root
       }.should raise_error "Bogus directory structure - Hole found after backup.1"
     end
+    
+    it "does not raise on a chain without backups" do
+      lambda {
+        Ark::Chain.new backup_root
+      }.should_not raise_error
+    end
   end
   
   describe "with a correct folder structure" do

@@ -9,7 +9,7 @@ module Ark
     end
     
     def chain
-      @repo.chains.detect{|c| c.name == @name.to_s }
+      @repo.chain(@name.to_s)
     end
     
     def noah

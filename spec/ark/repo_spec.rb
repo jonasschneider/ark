@@ -9,6 +9,17 @@ describe "Ark::Repo" do
   
   let(:repo) { Ark::Repo.new(path) }
   
+  describe "#chain" do
+    it "returns a chain with the given name" do
+      FileUtils.mkdir File.join(path, 'bup.0')
+      repo.chain('bup').name.should == 'bup'
+    end
+    
+    it "creates a new chain with the given name" do
+      repo.chain('bup').name.should == 'bup'
+    end
+  end
+  
   describe "#chains" do
     describe "without chains" do
       it "is empty" do

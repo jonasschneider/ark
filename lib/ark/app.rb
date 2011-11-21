@@ -18,6 +18,13 @@ module Ark
       haml :index
     end
     
+    get '/tasks/:name' do
+      @task = manager.tasks.detect{|c| c.name.to_s == params[:name]}
+      halt 404, 'Task not found' unless @task
+      haml :task
+    end
+    
+    
     get '/chains' do
       @chains = repo.chains
       haml :chains
