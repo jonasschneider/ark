@@ -3,19 +3,24 @@ require "haml"
 
 module Ark
   class App < Sinatra::Base
+    def manager
+      settings.manager || raise('No manager configured')
+    end
+    
     def repo
-      settings.repo || raise('No repository configured')
+      manager.first_repo
     end
     
     set :root, File.expand_path('app', File.dirname(__FILE__))
     
-    get '/' do
+    get '/chains' do
       @chains = repo.chains
       haml :index
     end
     
     get '/chains/:name' do
       @chain = repo.chains.detect{|c|c.name == params[:name]}
+      halt 404, 'Chain not found' unless @chain
       haml :chain
     end
     

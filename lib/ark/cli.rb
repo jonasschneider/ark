@@ -2,11 +2,13 @@ require "ap"
 
 module Ark
   class Cli
-    def self.run(metadata_path)
+    def self.run(metadata_path, options = {})
       m = Ark::Manager.new(YAML.load(File.read(metadata_path)))
       m.tasks.each do |name, task|
-        puts "Running #{name}".green
-        puts task.noah.command.white
+        unless options[:silent]
+          puts "Running #{name}".green
+          puts task.noah.command.wwhite
+        end
         task.noah.run!
       end
     end

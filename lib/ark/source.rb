@@ -1,7 +1,11 @@
 module Ark
   class Source
-    def self.load(path)
-      new(:fs, path)
+    def self.load(thing)
+      if thing.kind_of? self
+        thing
+      else
+        new(:fs, thing)
+      end
     end
     
     attr_reader :path

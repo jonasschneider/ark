@@ -16,7 +16,7 @@ describe "Ark::Cli" do
   end
   
   it "runs the tasks" do
-    Ark::Cli.run metadata_path
+    Ark::Cli.run metadata_path, silent: true
     
     r = Ark::Repo.new repo_path
     File.read(r.chains.first.backups.first.files.first).should == file_content

@@ -18,6 +18,11 @@ describe "Ark::Source" do
       Ark::Source.should_receive(:new).with(:fs, '/home/jonas/hello')
       Ark::Source.load('/home/jonas/hello')
     end
+    
+    it "simply returns a Source" do
+      s = Ark::Source.new :fs, '/home/jonas/hello'
+      Ark::Source.load(s).should == s
+    end
   end
   
   describe "#glob" do

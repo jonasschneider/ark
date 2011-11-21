@@ -4,11 +4,15 @@ module Ark
       @metadata = metadata
     end
     
+    def first_repo
+      repos.first[1]
+    end
+    
     def repos
       @repos ||= begin
         x = {}
         @metadata[:repos].each do |name, source|
-          x[name] = Ark::Repo.new(source)
+          x[name] = Ark::Repo.new(Ark::Source.load(source))
         end
         x
       end

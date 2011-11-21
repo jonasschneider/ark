@@ -8,6 +8,13 @@ describe "Ark::Manager" do
     end
   end
   
+  describe "#first_repo" do
+    it "return the repo" do
+      m = Ark::Manager.new(repos: { one: '/tmp/ark/one' })
+      m.first_repo.source.path.should == '/tmp/ark/one'
+    end
+  end
+  
   describe "with a repo and a task" do
     let(:manager) { Ark::Manager.new repos: { one: '/tmp/ark/one' }, tasks: { hellobup: { source: '/home/jonas/hello', repo: :one} } }
     
