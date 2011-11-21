@@ -52,8 +52,10 @@ describe "Ark::Chain" do
       end
       
       describe "#shifting_noah" do
-        it "returns a Noah that reuses the latest" do
-          
+        it "returns a Noah that reuses the latest version" do
+          n = chain.shifting_noah
+          n.backup_dir.should == (backup_root+'.0')
+          n.cache_dir.should == (backup_root+'.1')
         end
       end
     end

@@ -30,5 +30,9 @@ module Ark
     def each &block
       @backups.each &block
     end
+    
+    def shifting_noah
+      Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1")
+    end
   end
 end
