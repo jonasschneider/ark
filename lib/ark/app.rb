@@ -14,6 +14,11 @@ module Ark
       manager.first_repo
     end
     
+    def load_task!
+      @task = manager.tasks.detect{|c| c.name.to_s == params[:name]}
+      halt 404, 'Task not found' unless @task
+    end
+    
     set :root, File.expand_path('app', File.dirname(__FILE__))
     
     get '/' do
@@ -22,27 +27,14 @@ module Ark
     end
     
     get '/tasks/:name' do
-      @task = manager.tasks.detect{|c| c.name.to_s == params[:name]}
-      halt 404, 'Task not found' unless @task
+      load_task!
       haml :task
     end
     
-    
-    get '/chains' do
-      @chains = repo.chains
-      haml :chains
-    end
-    
-    get '/chains/:name' do
-      @chain = repo.chains.detect{|c|c.name == params[:name]}
-      halt 404, 'Chain not found' unless @chain
-      haml :chain
-    end
-    
-    get '/chains/:name/backups/:id' do
-      @chain = repo.chains.detect{|c|c.name == params[:name]}
-      @backup = @chain.backups.detect{|c|c.id == params[:id]}
-      "#{@backup.files.join(", ")}"
+    get '/tasks/:name/backups/:id' do
+      load_task!
+      @backup = @task.chain.backups.detect{|c|c.id == params[:id]}
+      haml :backup
     end
   end
 end

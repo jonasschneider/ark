@@ -1,0 +1,8 @@
+%h2= @task.name
+%h3= @backup.name
+- if @backup.files.empty?
+  (Keine Dateien)
+- else
+  %ul
+    - @backup.files.each do |file|
+      %li= file

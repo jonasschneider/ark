@@ -29,21 +29,14 @@ describe "Ark::App" do
       last_response.body.should have_selector("a[href='/tasks/bup']")
     end
     
-    it "displays a list of chains" do
-      get '/chains'
-      
-      last_response.body.should have_selector("a[href='/chains/bup']")
-    end
-    
     it "displays a list of backups for a task" do
       get '/tasks/bup'
       
       last_response.body.should have_selector("a[href='/tasks/bup/backups/#{repo.chains.first.backups.first.id}']")
     end
     
-    it "errors for a nonexistent chain" do
-      get '/chains/lolz'
-      
+    it "errors for a nonexistent task" do
+      get '/tasks/lolz'
       last_response.status.should == 404
     end
     
@@ -51,7 +44,7 @@ describe "Ark::App" do
       put_file File.join(repo_path, 'bup.0/test.txt'), 'new'
       put_file File.join(repo_path, 'bup.1/test.txt'), 'old'
       
-      get "/chains/bup/backups/#{repo.chains.first.backups.first.id}"
+      get "/tasks/bup/backups/#{repo.chains.first.backups.first.id}"
       
       last_response.body.should include('test.txt')
     end
