@@ -1,8 +1,11 @@
 require "sinatra"
 require "haml"
+require "ark/app/helpers"
 
 module Ark
   class App < Sinatra::Base
+    helpers Ark::AppHelpers
+    
     def manager
       settings.manager || raise('No manager configured')
     end

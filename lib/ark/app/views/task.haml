@@ -5,4 +5,4 @@
   %ul
     - @task.chain.backups.each do |backup|
       %li
-        %a{ href: "/tasks/#{@task.name}/backups/#{backup.id}" }== Backup #{backup.id}
+        %a{ href: "/tasks/#{@task.name}/backups/#{backup.id}" }== Backup #{backup.id} - #{timeago(backup.timestamp)}
