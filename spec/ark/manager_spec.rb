@@ -19,8 +19,9 @@ describe "Ark::Manager" do
     let(:manager) { Ark::Manager.new repos: { one: '/tmp/ark/one' }, tasks: { hellobup: { source: '/home/jonas/hello', repo: :one} } }
     
     it "sees the task" do
-      manager.tasks[:hellobup].source.path.should == '/home/jonas/hello'
-      manager.tasks[:hellobup].repo.source.path.should == '/tmp/ark/one'
+      manager.tasks.first.name.should == :hellobup
+      manager.tasks.first.source.path.should == '/home/jonas/hello'
+      manager.tasks.first.repo.source.path.should == '/tmp/ark/one'
     end
   end
 end

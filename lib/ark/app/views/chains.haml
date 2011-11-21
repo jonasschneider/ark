@@ -1,0 +1,5 @@
+%h2 Chains
+%ul
+  - @chains.each do |chain|
+    %li
+      %a{ href: "/chains/#{chain.name}" }= chain.name

@@ -1,5 +1,5 @@
-%h2 Chains
+%h2 Tasks
 %ul
-  - @chains.each do |chain|
+  - @tasks.each do |task|
     %li
-      %a{ href: "/chains/#{chain.name}" }= chain.name
+      %a{ href: "/tasks/#{task.name}" }= task.name

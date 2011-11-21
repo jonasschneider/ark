@@ -20,9 +20,9 @@ module Ark
     
     def tasks
       @tasks ||= begin
-        x = {}
+        x = []
         @metadata[:tasks].each do |name, data|
-          x[name] = Ark::Task.new(name, source: Ark::Source.load(data[:source]), repo: repos[data[:repo]])
+          x << Ark::Task.new(name, source: Ark::Source.load(data[:source]), repo: repos[data[:repo]])
         end
         x
       end

@@ -13,9 +13,14 @@ module Ark
     
     set :root, File.expand_path('app', File.dirname(__FILE__))
     
+    get '/' do
+      @tasks = manager.tasks
+      haml :index
+    end
+    
     get '/chains' do
       @chains = repo.chains
-      haml :index
+      haml :chains
     end
     
     get '/chains/:name' do

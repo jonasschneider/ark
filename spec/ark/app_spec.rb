@@ -23,6 +23,12 @@ describe "Ark::App" do
       Ark::App.set :manager, manager
     end
     
+    it "displays a list of tasks" do
+      get '/'
+      
+      last_response.body.should have_selector("a[href='/tasks/bup']")
+    end
+    
     it "displays a list of chains" do
       get '/chains'
       
