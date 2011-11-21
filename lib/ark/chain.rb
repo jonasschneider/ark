@@ -32,7 +32,7 @@ module Ark
     end
     
     def shifting_noah
-      Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1")
+      Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})
     end
   end
 end

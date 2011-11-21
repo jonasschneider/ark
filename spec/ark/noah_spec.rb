@@ -4,12 +4,25 @@ describe "Ark::Noah" do
   let(:data_dir) { File.join(SANDBOX_DIR, 'data') }
   let(:backup_dir) { File.join(SANDBOX_DIR, 'backup') }
   
-  
   let(:noah) { Ark::Noah.new data_dir: data_dir, backup_dir: backup_dir }
   
   it "stores the data and backup dir" do
     noah.data_dir.should == data_dir
     noah.backup_dir.should == backup_dir
+  end
+  
+  describe "#shift_commands" do
+    it "is empty" do
+      noah.shift_commands.should == []
+    end
+  
+    describe "with shifting enabled" do
+      let(:noah) { Ark::Noah.new data_dir: data_dir, backup_dir: backup_dir, shift: ['1', '2', '3'] }
+      
+      it "removes the last and shifts the others" do
+        noah.shift_commands.should == ["rm -rf 3", "mv 2 3", "mv 1 2"]
+      end
+    end
   end
   
   describe "#run!" do

@@ -56,6 +56,7 @@ describe "Ark::Chain" do
           n = chain.shifting_noah
           n.backup_dir.should == (backup_root+'.0')
           n.cache_dir.should == (backup_root+'.1')
+          n.shift.should == [(backup_root+'.0'), (backup_root+'.1'), (backup_root+'.2')]
         end
       end
     end
