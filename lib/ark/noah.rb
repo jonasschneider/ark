@@ -17,7 +17,7 @@ module Ark
       return [] if shift.empty?
       moves = [].tap do |moves|
         shift.each_with_index do |dir, i|
-          target = i == shift.length-1 ? "#{dir}.tmp" : shift[i+1]
+          target = i == shift.length-1 ? dir.succ : shift[i+1]
           moves << "mv #{dir} #{target}"
         end
       end
@@ -26,7 +26,7 @@ module Ark
     
     def rm_commands
       return [] if shift.empty?
-      ["rm -rf #{shift.last}.tmp"]
+      ["rm -rf #{shift.last.succ}"]
     end
     
     def link_option
@@ -37,12 +37,15 @@ module Ark
       end
     end
     
-    def rsync_command
-      "rsync -va #{link_option} --delete #{data_dir}/ #{backup_dir}"
+    def rsync_commands
+      [
+        "rsync -va #{link_option} --delete #{data_dir}/ #{backup_dir}",
+        "touch #{backup_dir}"
+      ]
     end
     
     def commands
-      shift_commands + [rsync_command] + rm_commands
+      shift_commands + rsync_commands + rm_commands
     end
     
     def command

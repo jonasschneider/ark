@@ -24,8 +24,8 @@ describe "Ark::Noah" do
       let(:noah) { Ark::Noah.new data_dir: data_dir, backup_dir: backup_dir, shift: ['1', '2', '3'] }
       
       it "removes the last and shifts the others" do
-        noah.shift_commands.should == ["mv 3 3.tmp", "mv 2 3", "mv 1 2"]
-        noah.rm_commands.should == ["rm -rf 3.tmp"]
+        noah.shift_commands.should == ["mv 3 4", "mv 2 3", "mv 1 2"]
+        noah.rm_commands.should == ["rm -rf 4"]
       end
     end
   end
