@@ -9,4 +9,10 @@ describe "Ark::Backup" do
       backup.timestamp.should == File.mtime(path)
     end
   end
+  
+  describe "#name" do
+    it "returns last directory name" do
+      backup.name.should == 'backup'
+    end
+  end
 end

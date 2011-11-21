@@ -1,16 +1,30 @@
 module Ark
   class Chain
     include Enumerable
+    attr_reader :path
     
-    def initialize(prefix)
-      @prefix = prefix
-      @dirs = Dir[@prefix+'*'].sort
+    def initialize(path)
+      @path = path
       
-      @backups = @dirs.map{ |dir| Ark::Backup.new(dir) }
+      @backups = []
+      
+      while File.exists?(dir = "#{path}.#{@backups.length}")
+        @backups << Ark::Backup.new(dir)
+      end
+      raise "Bogus directory structure - Hole found after #{@backups.last.name}" unless @backups.length == Dir["#{path}.*"].length
+      
       @backups.each_with_index do |backup, i|
         next if i == 0
-        raise "Bogus directory structure - #{dir} is newer than #{last_dir}" if backup.timestamp > @backups[i-1].timestamp
+        raise "Bogus directory structure - #{backup.name} is newer than #{@backups[i-1].name}" if backup.timestamp > @backups[i-1].timestamp
       end
+    end
+    
+    def prefix
+      File.dirname(@path)
+    end
+    
+    def name
+      File.basename(@path)
     end
     
     def each &block
