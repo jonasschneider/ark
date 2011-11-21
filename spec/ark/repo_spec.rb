@@ -28,5 +28,20 @@ describe "Ark::Repo" do
         repo.chains.first.count.should == 2
       end
     end
+    
+    describe "with other files and directories" do
+      before :each do
+        FileUtils.mkdir File.join(root, 'bup.0')
+        FileUtils.mkdir File.join(root, 'bup.1')
+        FileUtils.mkdir File.join(root, 'ohai')
+        FileUtils.touch File.join(root, 'test.txt')
+      end
+      
+      it "still sees only the chain" do
+        repo.chains.length.should == 1
+        repo.chains.first.name.should == 'bup'
+        repo.chains.first.count.should == 2
+      end
+    end
   end
 end
