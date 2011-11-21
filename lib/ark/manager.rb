@@ -1,5 +1,9 @@
 module Ark
   class Manager
+    def self.from_file(path)
+      new(YAML.load(File.read(path)))
+    end
+    
     def initialize(metadata)
       @metadata = metadata
     end

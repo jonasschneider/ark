@@ -33,7 +33,7 @@ module Ark
     end
     
     def noah
-      if @backups.length < 2
+      if @backups.length == 0
         Ark::Noah.new(backup_dir: "#{path}.0")
       else
         Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})

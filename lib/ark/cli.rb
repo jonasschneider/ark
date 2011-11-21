@@ -7,7 +7,7 @@ module Ark
       m.tasks.each do |task|
         unless options[:silent]
           puts "Running #{task.name}".green
-          puts task.noah.command.wwhite
+          puts task.noah.command.white
         end
         task.noah.run!
       end

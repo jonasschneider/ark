@@ -53,7 +53,24 @@ describe "Ark::Chain" do
       chain.repo
     end
     
-    describe "containing two backup versions" do
+    describe "containing one backup version" do
+      before :each do
+        put_file File.join(data_dir, 'hello.txt'), 'ohai'
+        Ark::Noah.new(data_dir: data_dir, backup_dir: (backup_root+'.0')).run!
+      end
+      
+      describe "#noah" do
+        it "returns a Noah that reuses the latest version" do
+          n = chain.noah
+          n.backup_dir.should == (backup_root+'.0')
+          n.cache_dir.should == (backup_root+'.1')
+          n.shift.should == [(backup_root+'.0')]
+        end
+      end
+    end
+
+    
+    describe "containing three backup versions" do
       before :each do
         put_file File.join(data_dir, 'hello.txt'), 'ohai'
         put_file File.join(data_dir, 'data'), 'constant'

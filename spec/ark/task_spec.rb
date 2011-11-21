@@ -31,7 +31,7 @@ describe "Ark::Task" do
       
       n = t.noah
       n.backup_dir.should == (repo_path+'/hellobup.0')
-      n.cache_dir.should == nil
+      n.cache_dir.should == (repo_path+'/hellobup.1')
       n.data_dir.should == '/home/jonas/hello'
     end
   end
