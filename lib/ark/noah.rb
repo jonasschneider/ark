@@ -13,7 +13,7 @@ module Ark
         `cp -al #{cache_dir} #{backup_dir}`
       end
       
-      `rsync -r --delete #{data_dir}/ #{backup_dir}`
+      `rsync -va --delete #{data_dir}/ #{backup_dir}`
     end
   end
 end
