@@ -1,9 +1,11 @@
 require "ark/version"
 
 module Ark
-  autoload :Noah, "ark/noah"
-  autoload :Chain, "ark/chain"
   autoload :Backup, "ark/backup"
-  
+  autoload :Chain, "ark/chain"
+  autoload :Repo, "ark/repo"
+
+  autoload :Noah, "ark/noah"
+
   autoload :App, "ark/app"
 end
