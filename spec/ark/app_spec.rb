@@ -15,7 +15,7 @@ describe "Ark::App" do
       
       get '/'
       
-      last_response.body.should include('bupchain')
+      last_response.body.should have_selector("a[href='/chains/bupchain']")
     end
     
     it "displays a list of backups for a chain" do
@@ -24,21 +24,17 @@ describe "Ark::App" do
       
       get '/chains/bupchain'
       
-      last_response.body.should include('2 backups')
+      last_response.body.should have_selector("a[href='/chains/bupchain/backups/#{repo.chains.first.backups.first.id}']")
     end
     
     it "displays a list of files for a backup" do
       FileUtils.mkdir File.join(repo_path, 'bupchain.0')
-      aFile = File.new(File.join(repo_path, 'bupchain.0/test.txt'), "w")
-      aFile.write('new')
-      aFile.close
+      put_file File.join(repo_path, 'bupchain.0/test.txt'), 'new'
       
       FileUtils.mkdir File.join(repo_path, 'bupchain.1')
-      aFile = File.new(File.join(repo_path, 'bupchain.1/test.txt'), "w")
-      aFile.write('old')
-      aFile.close
+      put_file File.join(repo_path, 'bupchain.1/test.txt'), 'old'
       
-      get "/chains/bupchain/backups/#{repo.chains.first.first.id}"
+      get "/chains/bupchain/backups/#{repo.chains.first.backups.first.id}"
       
       last_response.body.should include('test.txt')
     end

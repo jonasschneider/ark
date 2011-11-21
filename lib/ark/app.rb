@@ -1,4 +1,5 @@
 require "sinatra"
+require "haml"
 
 module Ark
   class App < Sinatra::Base
@@ -6,13 +7,16 @@ module Ark
       settings.repo || raise('No repository configured')
     end
     
+    set :root, File.expand_path('app', File.dirname(__FILE__))
+    
     get '/' do
-      repo.chains.map{|c|c.name}.join(", ")
+      @chains = repo.chains
+      haml :index
     end
     
     get '/chains/:name' do
       @chain = repo.chains.detect{|c|c.name == params[:name]}
-      "#{@chain.backups.count} backups"
+      haml :chain
     end
     
     get '/chains/:name/backups/:id' do
