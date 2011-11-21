@@ -1,5 +1,0 @@
-%h2= @chain.name
-%ul
-  - @chain.backups.each do |backup|
-    %li
-      %a{ href: "/chains/#{@chain.name}/backups/#{backup.id}" }== Backup #{backup.id}
