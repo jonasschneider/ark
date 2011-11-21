@@ -6,6 +6,7 @@ module Ark
   autoload :Repo, "ark/repo"
 
   autoload :Noah, "ark/noah"
+  autoload :Source, "ark/source"
 
   autoload :App, "ark/app"
 end

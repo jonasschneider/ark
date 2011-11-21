@@ -21,8 +21,3 @@ watch("lib/(.*)\.rb") do |match|
   puts(match)
   spec("spec/#{match[1]}_spec.rb")
 end
-
-watch("app/(.*)\.rb") do |match|
-  puts(match)
-  spec("spec/app/#{match[1]}_spec.rb")
-end
