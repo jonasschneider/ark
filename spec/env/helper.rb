@@ -1,3 +1,4 @@
+ENV["RACK_ENV"] = "test"
 require "ark"
 require "fileutils"
 require 'pp'
@@ -6,18 +7,10 @@ require "rack/test"
 
 SANDBOX_DIR = File.expand_path('sandbox', File.dirname(__FILE__))
 
-def put_file(name, contents)
-  full_name = SANDBOX_DIR+"/"+name
-  FileUtils.mkdir_p File.dirname(full_name)
-  
-  aFile = File.new(full_name, "w")
+def put_file(path, contents)
+  aFile = File.new(path, "w")
   aFile.write(contents)
   aFile.close
-end
-
-def get_file(name)
-  full_name = SANDBOX_DIR+"/"+name
-  File.read(full_name)
 end
 
 Webrat.configure do |config|

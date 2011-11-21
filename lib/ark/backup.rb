@@ -7,5 +7,13 @@ module Ark
     def name
       File.basename(path)
     end
+    
+    def id
+      timestamp+"-"+`ls -ltr #{path} | md5sum`
+    end
+    
+    def files
+      Dir[path+"/*"].map{|file| File.expand_path(file, path)}
+    end
   end
 end

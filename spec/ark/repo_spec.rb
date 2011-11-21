@@ -1,13 +1,13 @@
 require File.expand_path('../env/helper', File.dirname(__FILE__))
 
 describe "Ark::Repo" do
-  let(:root) { File.join(SANDBOX_DIR, 'repo') }
+  let(:path) { File.join(SANDBOX_DIR, 'repo') }
   
   before :each do
-    FileUtils.mkdir(root)
+    FileUtils.mkdir(path)
   end
   
-  let(:repo) { Ark::Repo.new(root) }
+  let(:repo) { Ark::Repo.new(path) }
   
   describe "#chains" do
     describe "without chains" do
@@ -18,8 +18,8 @@ describe "Ark::Repo" do
     
     describe "with a chain" do
       before :each do
-        FileUtils.mkdir File.join(root, 'bup.0')
-        FileUtils.mkdir File.join(root, 'bup.1')
+        FileUtils.mkdir File.join(path, 'bup.0')
+        FileUtils.mkdir File.join(path, 'bup.1')
       end
       
       it "sees the chain" do
@@ -31,10 +31,10 @@ describe "Ark::Repo" do
     
     describe "with other files and directories" do
       before :each do
-        FileUtils.mkdir File.join(root, 'bup.0')
-        FileUtils.mkdir File.join(root, 'bup.1')
-        FileUtils.mkdir File.join(root, 'ohai')
-        FileUtils.touch File.join(root, 'test.txt')
+        FileUtils.mkdir File.join(path, 'bup.0')
+        FileUtils.mkdir File.join(path, 'bup.1')
+        FileUtils.mkdir File.join(path, 'ohai')
+        FileUtils.touch File.join(path, 'test.txt')
       end
       
       it "still sees only the chain" do

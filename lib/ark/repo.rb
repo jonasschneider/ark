@@ -1,11 +1,13 @@
 module Ark
   class Repo
-    def initialize(root)
-      @root = root
+    attr_reader :path
+    
+    def initialize(path)
+      @path = path
     end
     
     def chains
-      Dir[@root+"/*"]
+      Dir[@path+"/*"]
         .select{ |path| File.directory?(path) && path.match(/[a-z]+\.\d+/) }
         .map{ |path| File.dirname(path) + '/' + File.basename(path).gsub(/\..*$/, '') }
         .uniq
