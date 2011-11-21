@@ -11,6 +11,7 @@ module Ark
       while File.exists?(dir = "#{path}.#{@backups.length}")
         @backups << Ark::Backup.new(dir)
       end
+      raise "Bogus directory structure - Backup 0 missing" if @backups.length == 0
       raise "Bogus directory structure - Hole found after #{@backups.last.name}" unless @backups.length == Dir["#{path}.*"].length
       
       @backups.each_with_index do |backup, i|
@@ -25,6 +26,10 @@ module Ark
     
     def name
       File.basename(@path)
+    end
+    
+    def backups
+      @backups
     end
     
     def each &block

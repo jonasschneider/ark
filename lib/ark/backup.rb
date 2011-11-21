@@ -9,7 +9,7 @@ module Ark
     end
     
     def id
-      timestamp+"-"+`ls -ltr #{path} | md5sum`
+      timestamp.to_i.to_s
     end
     
     def files

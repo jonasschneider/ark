@@ -11,8 +11,14 @@ module Ark
     end
     
     get '/chains/:name' do
-      chain = repo.chains.detect{|c|c.name == params[:name]}
-      "#{chain.first.files.join(", ")}"+  "#{chain.count} backups"
+      @chain = repo.chains.detect{|c|c.name == params[:name]}
+      "#{@chain.backups.count} backups"
+    end
+    
+    get '/chains/:name/backups/:id' do
+      @chain = repo.chains.detect{|c|c.name == params[:name]}
+      @backup = @chain.backups.detect{|c|c.id == params[:id]}
+      "#{@backup.files.join(", ")}"
     end
   end
 end
