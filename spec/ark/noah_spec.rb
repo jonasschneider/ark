@@ -4,6 +4,10 @@ describe "Ark::Noah" do
   let(:data_dir) { File.join(SANDBOX_DIR, 'data') }
   let(:backup_dir) { File.join(SANDBOX_DIR, 'backup') }
   
+  before :each do
+    FileUtils.mkdir(data_dir)
+  end
+  
   let(:noah) { Ark::Noah.new data_dir: data_dir, backup_dir: backup_dir }
   
   it "stores the data and backup dir" do
@@ -27,11 +31,11 @@ describe "Ark::Noah" do
   
   describe "#run!" do
     it "adds a new file to the backup" do
-      put_file 'data/test.txt', 'ohai'
+      put_file File.join(data_dir, 'test.txt'), 'ohai'
       
       noah.run!
       
-      get_file('backup/test.txt').should == 'ohai'
+      File.read(File.join(backup_dir, 'test.txt')).should == 'ohai'
     end
     
     describe "multiple times" do
@@ -42,18 +46,18 @@ describe "Ark::Noah" do
       let(:second_noah) { Ark::Noah.new data_dir: data_dir, backup_dir: second_backup_dir, cache_dir: first_backup_dir }
       
       it "adds a changed file to the backup" do
-        put_file 'data/test.txt', 'ohai'
+        put_file File.join(data_dir, 'test.txt'), 'ohai'
         first_noah.run!
         
-        put_file 'data/test.txt', 'changed'
+        put_file File.join(data_dir, 'test.txt'), 'changed'
         second_noah.run!
         
-        get_file('backup.1/test.txt').should == 'ohai'
-        get_file('backup.0/test.txt').should == 'changed'
+        File.read(File.join(backup_dir+'.1', 'test.txt')).should == 'ohai'
+        File.read(File.join(backup_dir+'.0', 'test.txt')).should == 'changed'
       end
       
       it "removes files from the backup" do
-        put_file 'data/test.txt', 'ohai'
+        put_file File.join(data_dir, 'test.txt'), 'ohai'
         first_noah.run!
         
         FileUtils.rm File.join(SANDBOX_DIR, 'data/test.txt')
@@ -63,7 +67,7 @@ describe "Ark::Noah" do
       end
       
       it "reuses inodes" do
-        put_file 'data/test.txt', 'ohai'
+        put_file File.join(data_dir, 'test.txt'), 'ohai'
         first_noah.run!
         second_noah.run!
         File.stat("#{second_backup_dir}/test.txt").ino.should == File.stat("#{first_backup_dir}/test.txt").ino

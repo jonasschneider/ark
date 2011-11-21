@@ -9,6 +9,22 @@ describe "Ark::Repo" do
   
   let(:repo) { Ark::Repo.new(path) }
   
+  describe "#metadata_for" do
+    describe "without a ark-manifest.yml file" do
+      it "returns nil" do
+        repo.metadata_for('ohai').should be_nil
+      end
+    end
+    
+    describe "without a ark-manifest.yml file describing a chain" do
+      let(:data) { ['a', 'b'] }
+      it "returns nil" do
+        put_file File.join(path, 'ark-manifest.yml'), YAML::dump({'ohai' => data})
+        repo.metadata_for('ohai').should == data
+      end
+    end
+  end
+  
   describe "#chains" do
     describe "without chains" do
       it "is empty" do

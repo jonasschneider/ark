@@ -20,10 +20,6 @@ module Ark
       end
     end
     
-    def prefix
-      File.dirname(@path)
-    end
-    
     def name
       File.basename(@path)
     end
@@ -38,6 +34,14 @@ module Ark
     
     def shifting_noah
       Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})
+    end
+    
+    def repo_path
+      File.dirname(@path)
+    end
+    
+    def repo
+      Ark::Repo.new repo_path
     end
   end
 end
