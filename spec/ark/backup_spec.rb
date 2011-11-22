@@ -20,9 +20,10 @@ describe "Ark::Backup" do
   end
   
   describe "#files" do
-    it "return the top-level files" do
+    it "return the top-level files with a relative path" do
       put_file(File.join(path, 'test.txt'), 'lol')
-      backup.files.should == [File.join(path, 'test.txt')]
+      FileUtils.mkdir File.join(path, 'folder')
+      backup.files.should == ['test.txt', 'folder']
     end
   end
   

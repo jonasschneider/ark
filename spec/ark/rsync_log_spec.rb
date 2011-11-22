@@ -38,7 +38,7 @@ END
   
   describe "#changed_files" do
     it "returns the rsync incremental file list without folders" do
-      log.changed_files.should == %w(Zany/Pendulum.mp3 test.txt)
+      log.changed_files.should == %w(/Zany/Pendulum.mp3 /test.txt)
     end
   end
   

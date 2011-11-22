@@ -17,7 +17,7 @@ module Ark
     end
     
     def files
-      Dir[path+"/*"].map{|file| File.expand_path(file, path)}
+      Dir[path+"/*"].map{|file| file.gsub(path, '')}
     end
     
     def log

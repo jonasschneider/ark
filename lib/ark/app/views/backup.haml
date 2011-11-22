@@ -1,10 +1,16 @@
-%h2= @task.name
-%h3= @backup.name
-%pre= @backup.log.text
+%h2= @backup.name
+%h3 Geänderte Dateien 
+- if @backup.changed_files.empty?
+  (Keine Dateien)
+- else
+  %ul
+    - @backup.changed_files.each do |file|
+      %li= file
+%h3 Alle Dateien
 == #{@backup.files_total} Dateien - #{format_bytes @backup.size_total}
 - if @backup.files.empty?
   (Keine Dateien)
 - else
   %ul
-    - @backup.files.each do |file|
+    - @backup.files.sort.each do |file|
       %li= file

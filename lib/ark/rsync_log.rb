@@ -32,7 +32,7 @@ module Ark
       @text.lines.each do |line|
         started = false if line.strip.empty?
         
-        changed << line.strip if started && !(line.strip =~ /\/$/)
+        changed << "/#{line.strip}" if started && !(line.strip =~ /\/$/)
         
         started = true if line =~ /sending incremental file list/
       end
