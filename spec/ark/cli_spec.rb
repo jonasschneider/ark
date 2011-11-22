@@ -19,6 +19,6 @@ describe "Ark::Cli" do
     Ark::Cli.run metadata_path, silent: true
     
     r = Ark::Repo.new repo_path
-    File.read(r.chains.first.backups.first.files.first).should == file_content
+    File.read(File.join(repo_path, 'bup.0/data.txt')).should == file_content
   end
 end
