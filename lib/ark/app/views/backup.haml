@@ -14,3 +14,6 @@
   %ul
     - @backup.files.sort.each do |file|
       %li= file
+
+%h3 Log
+%pre= @backup.log.text
