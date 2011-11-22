@@ -54,7 +54,7 @@ module Ark
     
     def rsync_commands
       [
-        "rsync -va #{link_option} --stats --delete #{data_dir}/ #{backup_dir}",
+        "rsync -va #{link_option} --stats --delete-after #{data_dir}/ #{backup_dir}",
         "touch #{backup_dir}",
         "mkdir #{backup_dir}/__ARK__"
       ]
