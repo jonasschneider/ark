@@ -1,13 +1,14 @@
 %h2= @backup.name
-%h3 Geänderte Dateien 
+%h3 Changed files
+== #{format_bytes @backup.size_transferred} transferred in #{@backup.files_transferred} files
 - if @backup.changed_files.empty?
   (Keine Dateien)
 - else
   %ul
     - @backup.changed_files.each do |file|
       %li= file
-%h3 Alle Dateien
-== #{@backup.files_total} Dateien - #{format_bytes @backup.size_total}
+%h3 All files
+== #{@backup.files_total} files - #{format_bytes @backup.size_total}
 - if @backup.files.empty?
   (Keine Dateien)
 - else
