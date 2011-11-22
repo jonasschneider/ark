@@ -30,6 +30,19 @@ describe "Ark::Noah" do
     end
   end
   
+  describe "#after" do
+    it "sets a hook that gets executed after run!" do
+      ran = false
+      noah.after do |x|
+        ran = true
+        x.should == noah
+      end
+      ran.should == false
+      noah.run!
+      ran.should == true
+    end
+  end
+  
   describe "after #run! with a file in the data directory" do
     before :each do
       put_file File.join(data_dir, 'test.txt'), 'lol'

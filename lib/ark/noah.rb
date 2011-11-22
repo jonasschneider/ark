@@ -8,6 +8,11 @@ module Ark
       @cache_dir = options[:cache_dir]
       @shift = options[:shift] || []
       @log = nil
+      @after_hook = lambda {  }
+    end
+    
+    def after &block
+      @after_hook = block
     end
     
     def run! interactive = false
@@ -22,6 +27,7 @@ module Ark
       aFile.write(log)
       aFile.close
       @log = Ark::RsyncLog.new(log)
+      @after_hook.arity == 1 ? @after_hook.call(self) : @after_hook.call
     end
     
     def shift_commands
