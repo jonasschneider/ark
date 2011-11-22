@@ -23,7 +23,12 @@ describe "Ark::Backup" do
     it "return the top-level files with a relative path" do
       put_file(File.join(path, 'test.txt'), 'lol')
       FileUtils.mkdir File.join(path, 'folder')
-      backup.files.should == ['test.txt', 'folder']
+      backup.files.should == ['/test.txt', '/folder']
+    end
+    
+    it "ignores the /__ARK__ dir" do
+      FileUtils.mkdir File.join(path, '__ARK__')
+      backup.files.should == []
     end
   end
   

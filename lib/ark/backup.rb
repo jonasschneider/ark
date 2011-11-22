@@ -17,7 +17,7 @@ module Ark
     end
     
     def files
-      Dir[path+"/*"].map{|file| file.gsub(path, '')}
+      Dir[path+"/*"].map{|file| file.gsub(path, '')}.reject{|path| path =~ /^\/__ARK__/}
     end
     
     def log
