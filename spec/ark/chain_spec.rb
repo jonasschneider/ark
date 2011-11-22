@@ -69,7 +69,6 @@ describe "Ark::Chain" do
       end
     end
 
-    
     describe "containing three backup versions" do
       before :each do
         put_file File.join(data_dir, 'hello.txt'), 'ohai'
@@ -87,11 +86,23 @@ describe "Ark::Chain" do
       end
       
       describe "#noah" do
-        it "returns a Noah that reuses the latest version" do
+        it "is a Noah" do
+          chain.noah.should be_kind_of(Ark::Noah)
+        end
+        
+        it "reuses the latest version" do
           n = chain.noah
           n.backup_dir.should == (backup_root+'.0')
           n.cache_dir.should == (backup_root+'.1')
           n.shift.should == [(backup_root+'.0'), (backup_root+'.1'), (backup_root+'.2')]
+        end
+
+        it "writes the log into backup.0/__ARK__/noah.log" do
+          noah = chain.noah
+          noah.data_dir = data_dir
+          noah.run!
+          
+          File.read(File.join(backup_root+'.0', '__ARK__/noah.log')).should == noah.log.text
         end
       end
     end

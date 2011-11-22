@@ -58,6 +58,20 @@ describe "Ark::Noah" do
   end
   
   describe "#run!" do
+    it "raises when data_dir is not set" do
+      noah.data_dir = nil
+      lambda do
+        noah.run!
+      end.should raise_error
+    end
+    
+    it "raises when backup_dir is not set" do
+      noah.backup_dir = nil
+      lambda do
+        noah.run!
+      end.should raise_error
+    end
+    
     it "does not print to stdout by default" do
       capture_stdout do
         noah.run!
@@ -112,12 +126,6 @@ describe "Ark::Noah" do
         second_noah.run!
         File.stat("#{second_backup_dir}/test.txt").ino.should == File.stat("#{first_backup_dir}/test.txt").ino
       end
-    end
-    
-    it "puts the log text in backup.0/__ARK__/noah.log" do
-      noah.run!
-      
-      File.read(File.join(backup_dir, '__ARK__/noah.log')).should == noah.log.text
     end
   end
 end

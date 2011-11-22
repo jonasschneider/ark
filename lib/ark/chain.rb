@@ -34,10 +34,17 @@ module Ark
     
     def noah
       if @backups.length == 0
-        Ark::Noah.new(backup_dir: "#{path}.0")
+        noah = Ark::Noah.new(backup_dir: "#{path}.0")
       else
-        Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})
+        noah = Ark::Noah.new(backup_dir: "#{path}.0", cache_dir: "#{path}.1", shift: @backups.map{|b|b.path})
       end
+      
+      noah.after do |noah|
+        aFile = File.new("#{noah.backup_dir}/__ARK__/noah.log", "w")
+        aFile.write(noah.log.text)
+        aFile.close
+      end
+      noah
     end
     
     def repo_path

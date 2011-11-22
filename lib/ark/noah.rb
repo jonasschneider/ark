@@ -16,6 +16,7 @@ module Ark
     end
     
     def run! interactive = false
+      raise "Need backup_dir and data_dir - #{self.inspect}" unless backup_dir && data_dir
       log = ""
       IO.popen(command) do |io|
         io.each do |line|
@@ -23,9 +24,6 @@ module Ark
           puts line if interactive
         end
       end
-      aFile = File.new("#{backup_dir}/__ARK__/noah.log", "w")
-      aFile.write(log)
-      aFile.close
       @log = Ark::RsyncLog.new(log)
       @after_hook.arity == 1 ? @after_hook.call(self) : @after_hook.call
     end
