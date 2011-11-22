@@ -10,15 +10,32 @@ module Ark
     end
     
     def run! interactive = false
-      @log = []
+      @log = ""
       IO.popen(command) do |io|
         io.each do |line|
           @log << line
           puts line if interactive
         end
       end
+      aFile = File.new("#{backup_dir}/__ARK__/noah.log", "w")
+      aFile.write(@log)
+      aFile.close
     end
     
+    def stats
+      {
+        files_total: read_stat('Number of files') - 1, # ignore ./ for good measure
+        files_transferred: read_stat('Number of files transferred'),
+        size_total: read_stat('Total file size'),
+        size_transferred: read_stat('Total transferred file size')
+      }
+
+    end
+
+    def read_stat(name)
+      $1.to_i if log.lines.detect{|l| l.match(/#{name}: (\d)+.*\n/) }
+    end
+
     def shift_commands
       return [] if shift.empty?
       moves = [].tap do |moves|
@@ -27,7 +44,7 @@ module Ark
           moves << "mv #{dir} #{target}"
         end
       end
-      moves.reverse
+      moves.reverse + ["mkdir #{backup_dir}"]
     end
     
     def rm_commands
@@ -45,8 +62,9 @@ module Ark
     
     def rsync_commands
       [
-        "rsync -va #{link_option} --delete #{data_dir}/ #{backup_dir}",
-        "touch #{backup_dir}"
+        "rsync -va #{link_option} --stats --delete #{data_dir}/ #{backup_dir}",
+        "touch #{backup_dir}",
+        "mkdir #{backup_dir}/__ARK__"
       ]
     end
     

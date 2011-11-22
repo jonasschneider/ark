@@ -23,19 +23,33 @@ describe "Ark::Noah" do
     describe "with shifting enabled" do
       let(:noah) { Ark::Noah.new data_dir: data_dir, backup_dir: backup_dir, shift: ['1', '2', '3'] }
       
-      it "removes the last and shifts the others" do
-        noah.shift_commands.should == ["mv 3 4", "mv 2 3", "mv 1 2"]
+      it "removes the last, shifts the others and creates a new empty target dir" do
+        noah.shift_commands.should == ["mv 3 4", "mv 2 3", "mv 1 2", "mkdir #{backup_dir}"]
         noah.rm_commands.should == ["rm -rf 4"]
       end
     end
   end
   
-  describe "#run!" do
-    it "logs" do
+  describe "after #run! with a file in the data directory" do
+    before :each do
+      put_file File.join(data_dir, 'test.txt'), 'lol'
       noah.run!
-      noah.log.first.should == "sending incremental file list\n"
     end
     
+    describe "#log" do
+      it "captures the output" do
+        noah.log.lines.first.should == "sending incremental file list\n"
+      end
+    end
+    
+    describe "#stats" do
+      it "parses rsync stats" do
+        noah.stats.should == { :files_total => 1, :files_transferred => 1, :size_total => 3, :size_transferred => 3 }
+      end
+    end
+  end
+  
+  describe "#run!" do
     it "does not print to stdout by default" do
       capture_stdout do
         noah.run!
@@ -47,9 +61,7 @@ describe "Ark::Noah" do
         noah.run! true
       end.should_not be_empty
     end
-  end
-  
-  describe "#run!" do
+    
     it "adds a new file to the backup" do
       put_file File.join(data_dir, 'test.txt'), 'ohai'
       
@@ -92,6 +104,12 @@ describe "Ark::Noah" do
         second_noah.run!
         File.stat("#{second_backup_dir}/test.txt").ino.should == File.stat("#{first_backup_dir}/test.txt").ino
       end
+    end
+    
+    it "puts a log in backup.0/__ARK__/noah.log" do
+      noah.run!
+      
+      File.read(File.join(backup_dir, '__ARK__/noah.log')).should == noah.log
     end
   end
 end
