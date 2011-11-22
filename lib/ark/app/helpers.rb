@@ -33,4 +33,65 @@ module Ark::AppHelpers
      "#{(minutes / 1440).round} days"
     end
   end
+  
+  def format_bytes(num)
+    Format.filesize(num)
+  end
+end
+
+class Format
+  FILESIZE_UNITS = %w[ bytes kilobytes megabytes gigabytes ]
+  
+  def self.filesize(bytes, precision = 1)
+    new(bytes).to_s(precision)
+  end
+  
+  def initialize(bytes)
+    @bytes = bytes.to_f
+  end
+  
+  def units
+    FILESIZE_UNITS.inject("bytes") do |method,current|
+      1.send(current) <= @bytes ? current : method
+    end
+  end
+  
+  def humanized_units
+    bytes == 1 ? units.to_s.sub(/s$/, '') : units.to_s
+  end
+  
+  def bytes
+    @bytes / 1.send(units)
+  end
+  
+  def to_s(precision = 1)
+    precision = 0 if units == "bytes"
+    "%.#{precision}f %s" % [ bytes, humanized_units ]
+  end
+end
+
+class Numeric
+  def bytes
+    self
+  end
+  alias_method :byte, :bytes
+  alias_method :b, :bytes
+  
+  def kilobytes
+    self * 1024
+  end
+  alias_method :kilobyte, :kilobytes
+  alias_method :kb, :kilobytes
+  
+  def megabytes
+    self * 1024.kilobytes
+  end
+  alias_method :megabyte, :megabytes
+  alias_method :mb, :megabytes
+  
+  def gigabytes
+    self * 1024.megabytes
+  end
+  alias_method :gigabyte, :gigabytes
+  alias_method :gb, :gigabytes
 end

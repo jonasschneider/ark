@@ -26,6 +26,19 @@ module Ark
       read_stat('Total transferred file size')
     end
     
+    def changed_files
+      started = false
+      changed = []
+      @text.lines.each do |line|
+        started = false if line.strip.empty?
+        
+        changed << line.strip if started && !(line.strip =~ /\/$/)
+        
+        started = true if line =~ /sending incremental file list/
+      end
+      changed
+    end
+    
     protected
 
     def read_stat(name)

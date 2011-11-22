@@ -2,7 +2,7 @@ require "active_support/core_ext/module/delegation"
 
 module Ark
   class Backup < Struct.new(:path)
-    delegate :files_total, :files_transferred, :size_total, :size_transferred, to: :log, allow_nil: true
+    delegate :files_total, :files_transferred, :size_total, :size_transferred, :changed_files, to: :log, allow_nil: true
     
     def timestamp
       File.mtime(path)

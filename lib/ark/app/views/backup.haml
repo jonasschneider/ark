@@ -1,5 +1,7 @@
 %h2= @task.name
 %h3= @backup.name
+%pre= @backup.log.text
+== #{@backup.files_total} Dateien - #{format_bytes @backup.size_total}
 - if @backup.files.empty?
   (Keine Dateien)
 - else

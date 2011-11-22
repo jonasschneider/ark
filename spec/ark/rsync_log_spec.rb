@@ -4,8 +4,10 @@ describe "Ark::RsyncLog" do
   let(:log_text) do
     <<-END
 sending incremental file list
-data
-hello.txt
+./
+Zany/
+Zany/Pendulum.mp3
+test.txt
 
 Number of files: 3
 Number of files transferred: 2
@@ -32,6 +34,12 @@ END
   
   it "#lines" do
     log.lines.should be_kind_of(Enumerable)
+  end
+  
+  describe "#changed_files" do
+    it "returns the rsync incremental file list without folders" do
+      log.changed_files.should == %w(Zany/Pendulum.mp3 test.txt)
+    end
   end
   
   it "works" do

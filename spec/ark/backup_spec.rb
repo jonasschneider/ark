@@ -38,10 +38,14 @@ describe "Ark::Backup" do
     end
   end
   
-  describe "#files_total et cetera" do
-    it "delegates to #log" do
-      backup.should_receive(:log).and_return(stub(:files_total => 1337))
-      backup.files_total.should == 1337
+  [:files_total, :files_transferred, :size_total, :size_transferred, :changed_files].each do |method|
+    it "delegates ##{method} to #log" do
+      log_mock = mock()
+      retval = stub
+      log_mock.should_receive(method).and_return(retval)
+      backup.should_receive(:log).and_return(log_mock)
+      
+      backup.send(method).should == retval
     end
   end
 end
