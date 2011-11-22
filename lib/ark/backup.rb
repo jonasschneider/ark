@@ -2,7 +2,7 @@ require "active_support/core_ext/module/delegation"
 
 module Ark
   class Backup < Struct.new(:path)
-    delegate :files_total, :files_transferred, :size_total, :size_transferred, to: :log
+    delegate :files_total, :files_transferred, :size_total, :size_transferred, to: :log, allow_nil: true
     
     def timestamp
       File.mtime(path)
@@ -21,7 +21,11 @@ module Ark
     end
     
     def log
-      Ark::RsyncLog.new(File.read(File.join(path, '__ARK__/noah.log')))
+      if File.exists?(logpath = File.join(path, '__ARK__/noah.log'))
+        Ark::RsyncLog.new(File.read(logpath))
+      else
+        nil
+      end
     end
   end
 end

@@ -28,8 +28,13 @@ describe "Ark::Backup" do
   
   describe "#log" do
     it "reads backup.0/__ARK__/noah.log" do
-      File.should_receive(:read).with(File.join(path, '__ARK__/noah.log')).and_return('ohai')
+      put_file File.join(path, '__ARK__/noah.log'), 'ohai'
       backup.log.text.should == 'ohai'
+    end
+    
+    it "returns nil when the file doesn't exist" do
+      File.should_receive(:exists?).with(File.join(path, '__ARK__/noah.log')).and_return(false)
+      backup.log.should == nil
     end
   end
   

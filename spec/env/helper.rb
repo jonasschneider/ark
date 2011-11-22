@@ -8,6 +8,8 @@ require "rack/test"
 SANDBOX_DIR = File.expand_path('sandbox', File.dirname(__FILE__))
 
 def put_file(path, contents)
+  FileUtils.mkdir_p File.dirname(path)
+  
   aFile = File.new(path, "w")
   aFile.write(contents)
   aFile.close
