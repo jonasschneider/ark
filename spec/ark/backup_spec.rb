@@ -25,4 +25,18 @@ describe "Ark::Backup" do
       backup.files.should == [File.join(path, 'test.txt')]
     end
   end
+  
+  describe "#log" do
+    it "reads backup.0/__ARK__/noah.log" do
+      File.should_receive(:read).with(File.join(path, '__ARK__/noah.log')).and_return('ohai')
+      backup.log.text.should == 'ohai'
+    end
+  end
+  
+  describe "#files_total et cetera" do
+    it "delegates to #log" do
+      backup.should_receive(:log).and_return(stub(:files_total => 1337))
+      backup.files_total.should == 1337
+    end
+  end
 end
