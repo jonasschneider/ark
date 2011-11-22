@@ -37,14 +37,9 @@ describe "Ark::Noah" do
     end
     
     describe "#log" do
-      it "captures the output" do
-        noah.log.lines.first.should == "sending incremental file list\n"
-      end
-    end
-    
-    describe "#stats" do
-      it "parses rsync stats" do
-        noah.stats.should == { :files_total => 1, :files_transferred => 1, :size_total => 3, :size_transferred => 3 }
+      it "returns a log object" do
+        noah.log.should be_kind_of(Ark::RsyncLog)
+        noah.log.text.should_not be_empty
       end
     end
   end
@@ -106,10 +101,10 @@ describe "Ark::Noah" do
       end
     end
     
-    it "puts a log in backup.0/__ARK__/noah.log" do
+    it "puts the log text in backup.0/__ARK__/noah.log" do
       noah.run!
       
-      File.read(File.join(backup_dir, '__ARK__/noah.log')).should == noah.log
+      File.read(File.join(backup_dir, '__ARK__/noah.log')).should == noah.log.text
     end
   end
 end

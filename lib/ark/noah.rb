@@ -7,35 +7,23 @@ module Ark
       @data_dir = options[:data_dir]
       @cache_dir = options[:cache_dir]
       @shift = options[:shift] || []
+      @log = nil
     end
     
     def run! interactive = false
-      @log = ""
+      log = ""
       IO.popen(command) do |io|
         io.each do |line|
-          @log << line
+          log << line
           puts line if interactive
         end
       end
       aFile = File.new("#{backup_dir}/__ARK__/noah.log", "w")
-      aFile.write(@log)
+      aFile.write(log)
       aFile.close
+      @log = Ark::RsyncLog.new(log)
     end
     
-    def stats
-      {
-        files_total: read_stat('Number of files') - 1, # ignore ./ for good measure
-        files_transferred: read_stat('Number of files transferred'),
-        size_total: read_stat('Total file size'),
-        size_transferred: read_stat('Total transferred file size')
-      }
-
-    end
-
-    def read_stat(name)
-      $1.to_i if log.lines.detect{|l| l.match(/#{name}: (\d)+.*\n/) }
-    end
-
     def shift_commands
       return [] if shift.empty?
       moves = [].tap do |moves|

@@ -10,6 +10,7 @@ module Ark
   autoload :Noah, "ark/noah"
   autoload :Task, "ark/task"
   autoload :Cli, "ark/cli"
+  autoload :RsyncLog, "ark/rsync_log"
 
   autoload :App, "ark/app"
 end
