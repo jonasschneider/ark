@@ -1,6 +1,6 @@
 module Ark
   class Noah
-    attr_accessor :backup_dir, :data_dir, :cache_dir, :shift
+    attr_accessor :backup_dir, :data_dir, :cache_dir, :shift, :log
     
     def initialize options
       @backup_dir = options[:backup_dir]
@@ -9,8 +9,14 @@ module Ark
       @shift = options[:shift] || []
     end
     
-    def run!
-      `#{command}`
+    def run! interactive = false
+      @log = []
+      IO.popen(command) do |io|
+        io.each do |line|
+          @log << line
+          puts line if interactive
+        end
+      end
     end
     
     def shift_commands

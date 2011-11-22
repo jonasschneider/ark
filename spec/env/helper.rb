@@ -13,6 +13,20 @@ def put_file(path, contents)
   aFile.close
 end
 
+def capture_stdout
+  txt = nil
+  begin
+    old_stdout = $stdout
+    $stdout = StringIO.new
+    yield
+    $stdout.rewind
+    txt = $stdout.read
+  ensure
+    $stdout = old_stdout
+  end
+  txt
+end
+
 Webrat.configure do |config|
   config.mode = :rack
   config.application_framework = :sinatra

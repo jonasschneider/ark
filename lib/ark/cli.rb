@@ -9,7 +9,7 @@ module Ark
           puts "Running #{task.name}".green
           puts task.noah.command.white
         end
-        task.noah.run!
+        task.noah.run! !options[:silent]
       end
     end
   end

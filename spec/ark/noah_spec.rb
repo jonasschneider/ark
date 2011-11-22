@@ -31,6 +31,25 @@ describe "Ark::Noah" do
   end
   
   describe "#run!" do
+    it "logs" do
+      noah.run!
+      noah.log.first.should == "sending incremental file list\n"
+    end
+    
+    it "does not print to stdout by default" do
+      capture_stdout do
+        noah.run!
+      end.should be_empty
+    end
+    
+    it "does print to stdout when called with true" do
+      capture_stdout do
+        noah.run! true
+      end.should_not be_empty
+    end
+  end
+  
+  describe "#run!" do
     it "adds a new file to the backup" do
       put_file File.join(data_dir, 'test.txt'), 'ohai'
       
